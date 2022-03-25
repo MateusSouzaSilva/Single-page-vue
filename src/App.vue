@@ -1,7 +1,11 @@
 <template>
   <div>
     <h1>{{ titulo }}</h1>
-    <img src="https://i0.wp.com/www.portaldodog.com.br/cachorros/wp-content/uploads/2021/03/visa%CC%83o-do-cachorro-2.jpeg?resize=626%2C626&ssl=1" alt="cachorro">
+    <ul>
+      <li v-for="foto of fotos">
+        <img  :src="foto.url" :alt="foto.titulo">
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -9,8 +13,14 @@
   export default {
     data() {
       return {
-        titulo: "PetShop"
+        titulo: "PetShop",
+        fotos: []
       }
+    },
+    created() {
+      let promise = this.$http.get('http://localhost:3000/v1/fotos')
+      .then(res => res.json())
+      .then(fotos => this.fotos = fotos, err=>console.log(err));
     }
   }
 </script>
